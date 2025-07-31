@@ -1,78 +1,37 @@
 <?php
 /**
- * The header for Astra Theme.
+ * The header.
  *
- * This is the template that displays all of the <head> section and everything up until <div id="content">
+ * This is the template that displays all of the <head> section and everything up until main.
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
- * @package Astra
- * @since 1.0.0
+ * @package WordPress
+ * @subpackage Twenty_Twenty_One
+ * @since Twenty Twenty-One 1.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
-?><!DOCTYPE html>
-<?php astra_html_before(); ?>
-<html <?php language_attributes(); ?>>
-<head>
-<?php astra_head_top(); ?>
-<meta charset="<?php bloginfo( 'charset' ); ?>">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<?php
-if ( apply_filters( 'astra_header_profile_gmpg_link', true ) ) {
-	?>
-	<link rel="profile" href="https://gmpg.org/xfn/11"> 
-	<?php
-}
 ?>
-<?php wp_head(); ?>
-<?php astra_head_bottom(); ?>
+<!doctype html>
+<html <?php language_attributes(); ?> <?php twentytwentyone_the_html_classes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<?php wp_head(); ?>
 </head>
 
-<body <?php astra_schema_body(); ?> <?php body_class(); ?>>
-<?php astra_body_top(); ?>
+<body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#content">
+		<?php
+		/* translators: Hidden accessibility text. */
+		esc_html_e( 'Skip to content', 'twentytwentyone' );
+		?>
+	</a>
 
-<div class="blob-background">
-  <div class="blob blob1"></div>
-  <div class="blob blob2"></div>
-  <div class="blob blob3"></div>
-</div>
+	<?php get_template_part( 'template-parts/header/site-header' ); ?>
 
-
-
-<a
-	class="skip-link screen-reader-text"
-	href="#content"
-	title="<?php echo esc_attr( astra_default_strings( 'string-header-skip-link', false ) ); ?>">
-		<?php echo esc_html( astra_default_strings( 'string-header-skip-link', false ) ); ?>
-</a>
-
-<div
-<?php
-	echo wp_kses_post(
-		astra_attr(
-			'site',
-			array(
-				'id'    => 'page',
-				'class' => 'hfeed site',
-			)
-		)
-	);
-	?>
->
-	<?php
-	astra_header_before();
-
-	astra_header();
-
-	astra_header_after();
-
-	astra_content_before();
-	?>
 	<div id="content" class="site-content">
-		<div class="ast-container">
-		<?php astra_content_top(); ?>
+		<div id="primary" class="content-area">
+			<main id="main" class="site-main">
