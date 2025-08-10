@@ -19,10 +19,15 @@ function twentytwentyone_enqueue_assets() {
 
     // JS d'animation
     wp_enqueue_script(
-        'twentytwentyone-animation-init',
-        get_stylesheet_directory_uri() . '/assets/js/animation-init.js',
+        'twentytwentyone-script',
+        get_stylesheet_directory_uri() . '/assets/js/script.js',
         array(),
         wp_get_theme()->get('Version'),
         true
     );
 }
+
+function theme_register_menus() {
+    register_nav_menu('main-menu', __('Menu principal', 'text-domain'));
+}
+add_action('after_setup_theme', 'theme_register_menus');
