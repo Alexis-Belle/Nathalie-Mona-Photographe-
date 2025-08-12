@@ -32,8 +32,28 @@
                 'fallback_cb'    => false
             ]);
             ?>
-      </div>
+        </div>
+
+        <div class="menu-container">
+            <button class="menu-toggle" aria-controls="nm-menu-overlay" aria-expanded="false" aria-label="<?php esc_attr_e('Ouvrir le menu', 'text-domain'); ?>">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </button>
+        </div>
     </nav>
+
+    <!-- Overlay -->
+    <div id="nm-menu-overlay" class="menu-header" hidden aria-hidden="true">
+    <?php
+        wp_nav_menu([
+            'theme_location' => 'main-menu',
+            'container'      => false,
+            'menu_class'     => 'menu-overlay',
+            'fallback_cb'    => false
+        ]);
+    ?>
+    </div>
 
 	<div id="content" class="site-content">
 		<div id="primary" class="content-area">
