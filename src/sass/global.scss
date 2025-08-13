@@ -10,6 +10,19 @@ html, body { height: 100%; }
 .site-content { flex: 1; }
 
 
+// ANIMATIONS
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInMove 0.4s ease forwards;
+}
+
+@keyframes fadeInMove {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 // MENU
 .nm-nav {

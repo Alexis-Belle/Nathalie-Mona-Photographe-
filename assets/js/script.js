@@ -8,14 +8,14 @@
   if(!burger || !overlay) return;
 
   function openMenu(){
-    body.classList.add('menu-open');
+    body.classList.add('menu-open', 'fade-in');
     burger.setAttribute('aria-expanded', 'true');
     overlay.hidden = false;
     overlay.setAttribute('aria-hidden', 'false');
     body.style.overflow = 'hidden';
   }
   function closeMenu(){
-    body.classList.remove('menu-open');
+    body.classList.remove('menu-open', 'fade-in');
     burger.setAttribute('aria-expanded', 'false');
     overlay.hidden = true;
     overlay.setAttribute('aria-hidden', 'true');
