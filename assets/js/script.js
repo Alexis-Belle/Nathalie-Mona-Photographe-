@@ -1,3 +1,5 @@
+// MENU BURGER
+
 (function(){
   const body    = document.body;
   const burger  = document.querySelector('.menu-toggle');
@@ -31,3 +33,38 @@
     if (window.innerWidth > 720) closeMenu();
   });
 })();
+
+
+// MODALE
+
+document.addEventListener('DOMContentLoaded', function () {
+  const modal    = document.getElementById('contactModal');
+  const closeBtn = modal ? modal.querySelector('.close') : null;
+
+// Ouvre la modale depuis tous les liens "Contact" (desktop et burger)
+if (modal) {
+  document.querySelectorAll('li.open-contact > a, a.open-contact').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+}
+
+  function closeModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+
+  // Clic en dehors de la fenêtre
+  if (modal) {
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+  }
+});
