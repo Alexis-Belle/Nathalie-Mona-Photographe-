@@ -1,3 +1,12 @@
+@mixin bouton-style {
+  text-align: center !important;
+  background-color: rgb(224, 222, 222) !important;
+  border-radius: 5px !important;
+  border:0 !important;
+  color:black !important;
+  font-weight:300 !important;
+}
+
 // S'assurer que la page occupe toute la hauteur
 html, body { height: 100%; }
 
@@ -7,8 +16,9 @@ html, body { height: 100%; }
   flex-direction: column;
 }
 
-.site-content { flex: 1; }
-
+.site-content { 
+  flex: 1; 
+}
 
 // ANIMATIONS
 .fade-in {
@@ -79,7 +89,8 @@ html, body { height: 100%; }
   height:2px; 
   background:#000; 
   border-radius:1px;
-  transition: transform .2s ease, opacity .2s ease;
+  transition: transform .2s ease, 
+  opacity .2s ease;
 }
 
 /* État ouvert*/
@@ -163,7 +174,7 @@ html, body { height: 100%; }
 .footer-container .footer-menu {
   display: flex;
   align-items: center;
-  gap: 2rem; /* espace entre les liens */
+  gap: 2rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -182,7 +193,7 @@ html, body { height: 100%; }
 }
 
 .footer-text {
-  pointer-events: none; /* empêche le clic */
+  pointer-events: none;
 }
 
 @media (max-width: 720px){
@@ -233,7 +244,7 @@ html, body { height: 100%; }
   right: 0;
   top:0;
   font-size: 3em;
-  line-height: 0.5;       /* pas d'espace vertical inutile */
+  line-height: 1;
   font-weight: bold;
   cursor: pointer;
 }
@@ -267,15 +278,10 @@ html, body { height: 100%; }
  }
 
 .modal-content .wpcf7-submit {
-  text-align: center !important;
-  background-color: rgb(224, 222, 222) !important;
+  @include bouton-style;
+  width: 100%;
   margin: 0 auto !important;
   display: flex;
-  width: 100%;
-  border-radius: 0 !important;
-  border:0 !important;
-  color:black !important;
-  font-weight:300 !important;
 }
 
 .modal-content .wpcf7-submit:hover {
@@ -304,4 +310,83 @@ html, body { height: 100%; }
   max-width: 17em;
 }
 
+}
+
+
+// DETAILS DES PHOTOS
+
+.single-photo__page { 
+  padding:2vh 7vw !important; 
+}
+.single-photo__wrap { 
+  display: flex;
+  justify-content: space-between;
+  min-height: 80vh; 
+}
+
+.single-photo__meta {
+  display:flex;
+  flex-direction: column;
+  justify-content: end;
+  width: 50%;
+  text-transform: uppercase;
+  padding: 2em 0;
+  text-decoration: none;
+}
+
+.single-photo__title {
+  width: 50%;
+}
+
+.single-photo__figure{
+  width: 50%;
+  height: 100vh; 
+  overflow: hidden;
+  margin: 0;
+}
+
+.single-photo__specs {
+  display: flex;
+  flex-direction: column;
+  list-style-type:none;
+  padding: 0;
+  gap: 1.5em;
+}
+
+.single-photo__img{
+  width: 100%;
+  height: 100% !important;
+  display: block;
+  object-fit: contain;       
+  object-position: center;    
+  max-width: none !important; 
+  max-height: none !important; 
+}
+
+.single-photo__specs span { 
+  font-weight: 600; 
+  margin-right: 6px; 
+}
+.single-photo__cta { 
+  display:inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  padding: 2em 0;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black
+}
+
+.single-photo__cta .btn {
+  @include bouton-style;
+  width: 15vw;
+}
+
+.single-photo__ref-input { 
+  width: 260px; 
+}
+.related-photos__grid { 
+  display:grid; 
+  gap: 24px; 
+  margin-top: 24px; 
 }

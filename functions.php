@@ -1,31 +1,39 @@
 <?php
 
-add_action('wp_enqueue_scripts', 'twentytwentyone_enqueue_assets');
-
-function twentytwentyone_enqueue_assets() {
-    // Style parent
+add_action('wp_enqueue_scripts', function () {
+    // CSS parent
     wp_enqueue_style(
-        'parent-style',
-        get_template_directory_uri() . '/style.css'
+        'twenty-twenty-one-style',
+        get_template_directory_uri() . '/style.css',
+        [],
+        wp_get_theme(get_template())->get('Version')
     );
 
-    // CSS principal
+    // Polices Google (charger ensuite localement avec extension)
     wp_enqueue_style(
-        'twentytwentyone-main-style',
+        'nm-google-fonts',
+        'https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap',
+        [],
+        null
+    );
+
+    // CSS thème enfant
+    wp_enqueue_style(
+        'child-style',
         get_stylesheet_directory_uri() . '/assets/css/main.css',
-        array('parent-style'),
+        [ 'twenty-twenty-one-style', 'nm-google-fonts' ],
         wp_get_theme()->get('Version')
     );
 
-    // JS d'animation
+    // JS du thème enfant
     wp_enqueue_script(
         'twentytwentyone-script',
         get_stylesheet_directory_uri() . '/assets/js/script.js',
-        array(),
+        [],
         wp_get_theme()->get('Version'),
         true
     );
-}
+}, 20);
 
 function theme_register_menus() {
     register_nav_menu('main-menu', __('Menu d’accueil', 'text-domain'));

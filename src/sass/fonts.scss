@@ -1,14 +1,14 @@
+
 /* Familles */
 :root{
-  --font-sans: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --font-mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
   /* tailles mobiles par défaut */
   --h1-size: 28px;       /* H1 mobile */
   --h2-size: 46px;       /* H2 mobile */
   --h3-size: 18px;       /* commun mobile/desktop */
-  --desc-size: 14px;     /* description photo */
-  --p-size: 14px;        /* paragraphe */
+  --desc-size: 16px;     /* description photo */
+  --p-size: 16px;        /* paragraphe */
 }
 
 @media (min-width: 960px){
@@ -43,8 +43,8 @@ h2 {
   font-style: italic;       /* Space Mono italic */
   font-weight: 400;         /* 400 italic */
   font-size: var(--h2-size);
-  line-height: 1.2;
-  margin: 0 0 .5em;
+  line-height: 1;
+  margin: 0 0 .3em;
 }
 
 // (commun mobile & desktop)
