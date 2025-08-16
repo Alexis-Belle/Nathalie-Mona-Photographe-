@@ -68,3 +68,30 @@ if (modal) {
     });
   }
 });
+
+// Gestion des flèches dans le détail des photos
+document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.querySelector('.single-photo__nav');
+  if (!nav) return;
+
+  const prevLnk = nav.querySelector('.nav-prev');
+  const nextLnk = nav.querySelector('.nav-next');
+  const prevImg = nav.querySelector('.preview-prev');
+  const nextImg = nav.querySelector('.preview-next');
+
+  const showPrev = () => {
+    if (prevImg) prevImg.classList.add('active');
+    if (nextImg) nextImg.classList.remove('active');
+  };
+
+  const showNext = () => {
+    if (nextImg) nextImg.classList.add('active');
+    if (prevImg) prevImg.classList.remove('active');
+  };
+
+  // Hover / focus
+  prevLnk?.addEventListener('mouseenter', showPrev);
+  nextLnk?.addEventListener('mouseenter', showNext);
+  prevLnk?.addEventListener('focusin',   showPrev);
+  nextLnk?.addEventListener('focusin',   showNext);
+});

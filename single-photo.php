@@ -53,7 +53,7 @@ while ( have_posts() ) : the_post();
     <!-- Colonne droite : visuel principal -->
     <figure class="single-photo__figure">
       <?php
-        // image à la une en grand – adapter la taille (ex: 'full' optimisé)
+        // image à la une en grand
         if ( has_post_thumbnail() ) {
           the_post_thumbnail('large', ['class' => 'single-photo__img']);
         }
@@ -62,38 +62,89 @@ while ( have_posts() ) : the_post();
   </div>
   <!-- CTA contact -->
   <div class="single-photo__cta">
-    <p>Cette photo vous intéresse ?</p>
-    <button class="btn btn--contact js-open-contact"
-            data-ref="<?php echo esc_attr($reference ?: get_the_title()); ?>">
-      Contact
-    </button>
+    <div class="single-photo-cta__container">
+      <p>Cette photo vous intéresse ?</p>
+      <button class="btn btn--contact js-open-contact"
+              data-ref="<?php echo esc_attr($reference ?: get_the_title()); ?>">
+        Contact
+      </button>
+
+    </div>
+     <!-- Nav précédente / suivante (dans la même catégorie) -->
+   <?php
+    $prev_post = get_previous_post(true, '', 'categorie');
+    $next_post = get_next_post(true, '', 'categorie');
+    ?>
+    <nav class="single-photo__nav">
+      <!-- Boîte de preview unique -->
+      <div class="preview-box">
+        <?php if ($prev_post): ?>
+          <?php echo get_the_post_thumbnail(
+            $prev_post->ID, 'medium',
+            ['class' => 'preview-img preview-prev']
+          ); ?>
+        <?php endif; ?>
+        <?php if ($next_post): ?>
+          <?php echo get_the_post_thumbnail(
+            $next_post->ID, 'medium',
+            ['class' => 'preview-img preview-next active']
+          ); ?>
+        <?php endif; ?>
+      </div>
+      <div class="nav-container">
+          <?php if ($prev_post): ?>
+              <a class="arrow-wrapper nav-prev"
+                href="<?php echo esc_url(get_permalink($prev_post)); ?>"
+                aria-label="Photo précédente : <?php echo esc_attr(get_the_title($prev_post)); ?>">
+                  <span class="arrow arrow-left"></span>
+              </a>
+          <?php endif; ?>
+
+          <?php if ($next_post): ?>
+              <a class="arrow-wrapper nav-next"
+                href="<?php echo esc_url(get_permalink($next_post)); ?>"
+                aria-label="Photo suivante : <?php echo esc_attr(get_the_title($next_post)); ?>">
+                  <span class="arrow arrow-right"></span>
+              </a>
+          <?php endif; ?>
+      </div>
+    </nav>
+    </aside>
   </div>
   <!-- Section : Vous aimerez aussi (photos apparentées) -->
   <section class="related-photos">
-    <h2 class="related-photos__title">Vous aimerez aussi</h2>
-    <div class="related-photos__grid">
-      <?php
-        // Récupère les catégories du post courant
-        $cat_ids = $cats ? wp_list_pluck($cats, 'term_id') : [];
-        $q = new WP_Query([
-          'post_type'      => 'photo',
-          'post__not_in'   => [$post_id],
-          'posts_per_page' => 2,              // maquette : 2 éléments
-          'orderby'        => 'rand',
-          'tax_query'      => $cat_ids ? [[
-            'taxonomy' => 'categorie',
-            'field'    => 'term_id',
-            'terms'    => $cat_ids,
-          ]] : [],
-        ]);
+    <h3 class="related-photos__title">Vous aimerez aussi</h3>
 
-        if ( $q->have_posts() ) :
-          while ( $q->have_posts() ) : $q->the_post();
-            get_template_part('template-parts/photo-card'); // réutilisable
-          endwhile;
-          wp_reset_postdata();
-        endif;
-      ?>
+    <div class="related-photos__container">
+      <?php
+      $cat_ids = $cats ? wp_list_pluck($cats, 'term_id') : [];
+      $q = new WP_Query([
+        'post_type'      => 'photo',
+        'post__not_in'   => [$post_id],
+        'posts_per_page' => 2,
+        'orderby'        => 'rand',
+        'tax_query'      => $cat_ids ? [[
+          'taxonomy' => 'categorie',
+          'field'    => 'term_id',
+          'terms'    => $cat_ids,
+        ]] : [],
+      ]);
+
+      if ($q->have_posts()):
+        while ($q->have_posts()): $q->the_post(); ?>
+          <div class="related-photos__item">
+            <a class="related-photos__link" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
+              <?php
+              if (has_post_thumbnail()) {
+                the_post_thumbnail('related-2col', ['class' => 'related-photos__img']);
+              } else {
+                the_post_thumbnail('large', ['class' => 'related-photos__img']); // fallback
+              }
+              ?>
+            </a>
+          </div>
+        <?php endwhile; wp_reset_postdata();
+      endif; ?>
     </div>
   </section>
 </main>
