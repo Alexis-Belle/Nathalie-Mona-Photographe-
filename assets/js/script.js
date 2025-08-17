@@ -37,37 +37,46 @@
 
 // MODALE
 
-document.addEventListener('DOMContentLoaded', function () {
-  const modal    = document.getElementById('contactModal');
-  const closeBtn = modal ? modal.querySelector('.close') : null;
+jQuery(document).ready(function($) {
+  const $modal    = $('#contactModal');
+  const $refInput = $modal.find('input[name="your-subject"]');
 
-// Ouvre la modale depuis tous les liens "Contact" (desktop et burger)
-if (modal) {
-  document.querySelectorAll('li.open-contact > a, a.open-contact').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      modal.style.display = 'block';
-      document.body.style.overflow = 'hidden';
-    });
+  // Ouvre la modale depuis le header
+  $('li.open-contact > a, a.open-contact').on('click', function(e) {
+    e.preventDefault();
+    $modal.show();
+    $('body').css('overflow', 'hidden');
   });
-}
 
-  function closeModal() {
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  }
+  // Ouvre la modale depuis bouton avec data-ref
+  $('.js-open-contact').on('click', function(e) {
+    e.preventDefault();
+    $modal.show();
+    $('body').css('overflow', 'hidden');
 
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeModal);
-  }
+    // récupère la valeur data-ref du bouton et préremplit
+    const ref = $(this).data('ref');
+    if ($refInput.length && ref) {
+      $refInput.val(ref);
+    }
+  });
 
-  // Clic en dehors de la fenêtre
-  if (modal) {
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) closeModal();
-    });
-  }
+  // Fermeture modale
+  $modal.find('.close').on('click', function() {
+    $modal.hide();
+    $('body').css('overflow', '');
+  });
+
+  // Clic en dehors du contenu
+  $modal.on('click', function(e) {
+    if (e.target === this) {
+      $modal.hide();
+      $('body').css('overflow', '');
+    }
+  });
 });
+
+// PHOTO DETAIL
 
 // Gestion des flèches dans le détail des photos
 document.addEventListener('DOMContentLoaded', () => {

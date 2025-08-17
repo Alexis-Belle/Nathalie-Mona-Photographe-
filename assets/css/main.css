@@ -499,8 +499,15 @@ html, body {
   margin-right: 6px;
 }
 
-.single-photo__cta {
+.separator-cta {
   border-bottom: 2px solid black;
+}
+
+.separator-cta.top {
+  width: 50%;
+}
+
+.single-photo__cta {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -512,7 +519,7 @@ html, body {
   align-items: center;
   width: 50%;
   height: 118px;
-  border-top: 2px solid black;
+  gap: 1em;
 }
 
 .single-photo__cta .btn {
@@ -522,7 +529,7 @@ html, body {
   border: 0 !important;
   color: black !important;
   font-weight: 300 !important;
-  width: 15vw;
+  width: 15em;
 }
 
 .single-photo__cta .btn:hover {
@@ -588,4 +595,93 @@ html, body {
      object-fit: cover;
   -o-object-position: center;
      object-position: center;
+}
+
+@media (max-width: 960px) {
+  .single-photo__page {
+    padding: 1vh 4vw !important;
+  }
+  .single-photo__figure {
+    height: 70vh;
+  }
+  .single-photo__cta .btn {
+    padding: 1em 2em;
+  }
+}
+@media (max-width: 720px) {
+  .single-photo__page {
+    padding: 0vh 4vw !important;
+  }
+  .single-photo__figure {
+    width: 100%;
+    height: auto;
+  }
+  .single-photo__wrap {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 20vh;
+    padding: 0 4em;
+  }
+  .single-photo__specs, .single-photo__title {
+    width: 100%;
+  }
+  .single-photo__specs {
+    padding: 0 0 2em 0;
+  }
+  .single-photo__meta {
+    text-align: start;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    padding: 1em 0;
+  }
+  .separator-cta, .separator-cta.top {
+    width: 100vw;
+    margin-left: -50vw;
+    left: 50%;
+    position: relative;
+  }
+  .single-photo__nav {
+    display: none;
+  }
+  .single-photo__cta {
+    padding: 1em 3em;
+    justify-content: center;
+  }
+  .single-photo-cta__container {
+    width: 90%;
+    flex-direction: column;
+    align-items: start;
+    gap: 0;
+  }
+  .single-photo__cta .btn {
+    margin: auto;
+    width: 100%;
+  }
+  .related-photos {
+    margin: 2em 0 0em 0;
+  }
+  .related-photos__title {
+    margin: 0 0 2em;
+    text-align: center;
+  }
+  .related-photos__container {
+    padding: 0 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+@media (max-width: 400px) {
+  .single-photo__wrap {
+    padding: 0 1em;
+  }
+  .single-photo__cta {
+    padding: 1em 1.5em;
+  }
+  .single-photo-cta__container {
+    width: 100%;
+  }
 }

@@ -61,12 +61,13 @@ while ( have_posts() ) : the_post();
     </figure>
   </div>
   <!-- CTA contact -->
+  <div class="separator-cta top"></div>
   <div class="single-photo__cta">
     <div class="single-photo-cta__container">
       <p>Cette photo vous intéresse ?</p>
+
       <button class="btn btn--contact js-open-contact"
-              data-ref="<?php echo esc_attr($reference ?: get_the_title()); ?>">
-        Contact
+      type="button" data-ref="<?php echo esc_attr($reference ?: get_the_title()); ?>"> Contact 
       </button>
 
     </div>
@@ -111,6 +112,7 @@ while ( have_posts() ) : the_post();
     </nav>
     </aside>
   </div>
+  <div class="separator-cta bottom"></div>
   <!-- Section : Vous aimerez aussi (photos apparentées) -->
   <section class="related-photos">
     <h3 class="related-photos__title">Vous aimerez aussi</h3>
