@@ -12,7 +12,6 @@
  */
 
 ?>
-			</main><!-- #main -->
 		</div><!-- #primary -->
 	</div><!-- #content -->
 

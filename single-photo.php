@@ -116,7 +116,6 @@ while ( have_posts() ) : the_post();
   <!-- Section : Vous aimerez aussi (photos apparentées) -->
   <section class="related-photos">
     <h3 class="related-photos__title">Vous aimerez aussi</h3>
-
     <div class="related-photos__container">
       <?php
       $cat_ids = $cats ? wp_list_pluck($cats, 'term_id') : [];
@@ -131,22 +130,13 @@ while ( have_posts() ) : the_post();
           'terms'    => $cat_ids,
         ]] : [],
       ]);
-
       if ($q->have_posts()):
-        while ($q->have_posts()): $q->the_post(); ?>
-          <div class="related-photos__item">
-            <a class="related-photos__link" href="<?php the_permalink(); ?>" aria-label="<?php the_title_attribute(); ?>">
-              <?php
-              if (has_post_thumbnail()) {
-                the_post_thumbnail('related-2col', ['class' => 'related-photos__img']);
-              } else {
-                the_post_thumbnail('large', ['class' => 'related-photos__img']); // fallback
-              }
-              ?>
-            </a>
-          </div>
-        <?php endwhile; wp_reset_postdata();
-      endif; ?>
+        while ($q->have_posts()): $q->the_post();
+          get_template_part('template-parts/photo-card');
+        endwhile;
+        wp_reset_postdata();
+      endif;
+      ?>
     </div>
   </section>
 </main>
