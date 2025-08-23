@@ -104,3 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
   prevLnk?.addEventListener('focusin',   showPrev);
   nextLnk?.addEventListener('focusin',   showNext);
 });
+
+
+
