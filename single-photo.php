@@ -66,9 +66,7 @@ while ( have_posts() ) : the_post();
     <div class="single-photo-cta__container">
       <p>Cette photo vous intéresse ?</p>
       <button class="btn btn--contact js-open-contact"
-      type="button" data-ref="<?php echo esc_attr($reference ?: get_the_title()); ?>"> Contact 
-      </button>
-
+      type="button" data-ref="<?php echo esc_attr($reference ?: get_the_title()); ?>"> Contact </button>
     </div>
      <!-- Nav précédente / suivante (dans la même catégorie) -->
    <?php

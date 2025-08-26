@@ -2,51 +2,65 @@
 get_header();
 ?>
 <main id="front-page" class="front-page">
-<section class="hero">
+  <section class="hero">
     <h1 class="hero__title">PHOTOGRAPHE EVENT</h1>
-</section>
+  </section>
 
   <section class="home-photos">
 
     <!-- Filtres dynamiques -->
     <form id="photo-filters" class="photo-filters">
       <?php
-      // Catégories (taxonomy: categorie_photo)
+      // Catégories
       $cats = get_terms([
         'taxonomy'   => 'categorie',
         'hide_empty' => true,
       ]);
-      ?>
-      <div class="left-filter-container">
-        <select id="filter-category" name="category">
-          <option value="">Catégories</option>
-          <?php foreach ($cats as $t): ?>
-            <option value="<?php echo esc_attr($t->slug); ?>"><?php echo esc_html($t->name); ?></option>
-          <?php endforeach; ?>
-        </select>
-
-      <?php
-      // Formats (taxonomy: format_photo)
+      // Formats
       $fmts = get_terms([
         'taxonomy'   => 'format',
         'hide_empty' => true,
       ]);
       ?>
-        <select id="filter-format" name="format">
-          <option value="">Formats</option>
+
+      <!-- Inputs cachés lus par le JS Ajax (mêmes IDs qu'avant) -->
+      <input type="hidden" id="filter-category" name="category" value="">
+      <input type="hidden" id="filter-format"   name="format"   value="">
+      <input type="hidden" id="filter-order"    name="order"    value="date_desc">
+
+      <div class="left-filter-container">
+        <!-- Catégories -->
+      <ul class="filter-list" data-target="#filter-category" role="listbox" aria-label="Catégories">
+          <li class="filter-item is-label is-active" data-value="">Catégories</li>
+        <li class="filter-item" data-value="">- Par Défaut -</li>
+        <?php foreach ($cats as $t): ?>
+          <li class="filter-item" data-value="<?php echo esc_attr($t->slug); ?>">
+            <?php echo esc_html($t->name); ?>
+          </li>
+        <?php endforeach; ?>
+        </ul>
+
+        <!-- Formats -->
+        <ul class="filter-list" data-target="#filter-format" role="listbox" aria-label="Formats">
+          <li class="filter-item is-active" data-value="">Formats</li>
+          <li class="filter-item" data-value="">- Par Défaut -</li>
           <?php foreach ($fmts as $t): ?>
-            <option value="<?php echo esc_attr($t->slug); ?>"><?php echo esc_html($t->name); ?></option>
+            <li class="filter-item" data-value="<?php echo esc_attr($t->slug); ?>">
+              <?php echo esc_html($t->name); ?>
+            </li>
           <?php endforeach; ?>
-        </select>
+        </ul>
       </div>
+
       <div class="right-filter-container">
-        <select id="filter-order" name="order">
-          <option value="">Triez Par</option>
-          <option value="date_desc">Plus récents</option>
-          <option value="date_asc">Plus anciens</option>
-          <option value="title_asc">Titre A→Z</option>
-          <option value="title_desc">Titre Z→A</option>
-        </select>
+        <!-- Tri -->
+        <ul class="filter-list" data-target="#filter-order" role="listbox" aria-label="Triez par">
+          <li class="filter-item is-label is-active" data-value="">Triez par</li>        
+          <li class="filter-item" data-value="date_desc">Plus récents</li>
+          <li class="filter-item" data-value="date_asc">Plus anciens</li>
+          <li class="filter-item" data-value="title_asc">Titre A→Z</li>
+          <li class="filter-item" data-value="title_desc">Titre Z→A</li>
+        </ul>
       </div>
     </form>
 
@@ -74,7 +88,7 @@ get_header();
     </div>
 
   </section>
-
-
+</main>
 <?php
 get_footer();
+?>

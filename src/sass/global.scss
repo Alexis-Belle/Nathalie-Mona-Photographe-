@@ -660,7 +660,7 @@ html, body { height: 100%; }
 }
 
 .home-photos {
-  padding: 4em 6em 4em 6em;
+  padding: 4em 6em;
 }
 
 .home-photos__container {
@@ -670,54 +670,127 @@ html, body { height: 100%; }
   align-items: stretch;
 }
 
-@media (max-width: 720px){
-.home-photos__container {
-  padding:0 2em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+@media (max-width: 720px) {
+  .home-photos__container {
+    padding: 0 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
-.photo-filters {
+// Filtres
+.photo-filters{
+  display:flex;
+  justify-content: space-between;
+  gap:2rem;
   padding:0 0 2em 0;
-  display:flex;
-}
-.left-filter-container, .right-filter-container {
-  display:flex;
-  width: 49%;
 }
 
-.photo-filters select {
-  width: 45%;
-  border-radius: 10px;
+.left-filter-container,.right-filter-container {
+  width:49%;
+  display:flex;
+  gap:1.25rem;
+}
+
+.right-filter-container{ 
+  justify-content:flex-end; 
+}
+
+.filter-list{
+  position:relative;
+  width:45%;
+  min-width:180px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.filter-item.is-label {
+  position: relative;
+  display: block;
   border: 1px solid #B8BBC2;
-  text-transform:uppercase; 
-  padding-left:1.5em;
+  border-radius: 10px;
+  background: #ffffff;
+  text-transform: uppercase;
   font-weight: 500;
-  font-size: 12px
+  font-size: 12px;
+  padding: 10px 1.5em;
+  cursor: pointer;
+  user-select: none;
+  font-family: 'Poppins';
+
+   &::after {
+    content: "";
+    position: absolute;
+    right: 1.4em;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    background: url('../../assets/images/chevron.svg') no-repeat center/contain;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+  }
 }
 
-.left-filter-container {
-  justify-content: space-around;
+/* quand la liste est ouverte → flèche pivote ▲ */
+.filter-list.is-open .filter-item.is-label::after {
+  transform: translateY(-50%) rotate(180deg);
 }
 
-.right-filter-container {
-  justify-content: end;
+// items (cachés par défaut)
+.filter-item{
+  display:none;
+  background:#fff;
+  color:#000;
+  border:1px solid #ECEDEF;
+  border-top:none;
+  cursor:pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
+
+.filter-list.is-open .filter-item:not(.is-label) {
+  display: block;
+}
+
+.filter-item:hover:not(.is-label),
+.filter-item.is-active:not(.is-label) {
+  background-color: #E00000;
+  color: #fff;
+}
+
+@media (max-width:960px){
+  .home-photos {
+    padding: 2em 3em;
+  }
+  .photo-filters, .left-filter-container, .right-filter-container { 
+    flex-direction:column; 
+    align-items: center;
+    width: 100%;
+   }
+   .filter-list {
+    width: 70vw;
+   }
+}
+@media (max-width:720px){
+    .home-photos {
+    padding: 2em 0em;
+  }
+}
+
+// Bouton Charger plus
 
 .load-more-wrap {
-  display:flex;
+  display: flex;
   justify-content: center;
-  padding:2em 0 0 0;
+  padding: 2em 1em;
 }
 
 .load-more__btn {
   @include bouton-style;
   width: 15em;
-}
-
-.load-more__btn:hover {
-  color:rgb(255, 255, 255) !important;
-  background-color: rgb(0, 0, 0) !important;
+  &:hover {
+    color: #fff !important;
+    background-color: #000 !important;
+  }
 }

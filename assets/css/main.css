@@ -727,7 +727,7 @@ html, body {
   }
 }
 .home-photos {
-  padding: 4em 6em 4em 6em;
+  padding: 4em 6em;
 }
 
 .home-photos__container {
@@ -746,37 +746,106 @@ html, body {
   }
 }
 .photo-filters {
-  padding: 0 0 2em 0;
   display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0 0 2em 0;
 }
 
 .left-filter-container, .right-filter-container {
-  display: flex;
   width: 49%;
-}
-
-.photo-filters select {
-  width: 45%;
-  border-radius: 10px;
-  border: 1px solid #B8BBC2;
-  text-transform: uppercase;
-  padding-left: 1.5em;
-  font-weight: 500;
-  font-size: 12px;
-}
-
-.left-filter-container {
-  justify-content: space-around;
+  display: flex;
+  gap: 1.25rem;
 }
 
 .right-filter-container {
-  justify-content: end;
+  justify-content: flex-end;
 }
 
+.filter-list {
+  position: relative;
+  width: 45%;
+  min-width: 180px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filter-item.is-label {
+  position: relative;
+  display: block;
+  border: 1px solid #B8BBC2;
+  border-radius: 10px;
+  background: #ffffff;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 10px 1.5em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  font-family: "Poppins";
+}
+.filter-item.is-label::after {
+  content: "";
+  position: absolute;
+  right: 1.4em;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  background: url("../../assets/images/chevron.svg") no-repeat center/contain;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+}
+
+/* quand la liste est ouverte → flèche pivote ▲ */
+.filter-list.is-open .filter-item.is-label::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.filter-item {
+  display: none;
+  background: #fff;
+  color: #000;
+  border: 1px solid #ECEDEF;
+  border-top: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.filter-list.is-open .filter-item:not(.is-label) {
+  display: block;
+}
+
+.filter-item:hover:not(.is-label),
+.filter-item.is-active:not(.is-label) {
+  background-color: #E00000;
+  color: #fff;
+}
+
+@media (max-width: 960px) {
+  .home-photos {
+    padding: 2em 3em;
+  }
+  .photo-filters, .left-filter-container, .right-filter-container {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .filter-list {
+    width: 70vw;
+  }
+}
+@media (max-width: 720px) {
+  .home-photos {
+    padding: 2em 0em;
+  }
+}
 .load-more-wrap {
   display: flex;
   justify-content: center;
-  padding: 2em 0 0 0;
+  padding: 2em 1em;
 }
 
 .load-more__btn {
@@ -788,8 +857,7 @@ html, body {
   font-weight: 300 !important;
   width: 15em;
 }
-
 .load-more__btn:hover {
-  color: rgb(255, 255, 255) !important;
-  background-color: rgb(0, 0, 0) !important;
+  color: #fff !important;
+  background-color: #000 !important;
 }
