@@ -1,4 +1,5 @@
 
+
 @mixin bouton-style {
   text-align: center !important;
   background-color: rgb(224, 222, 222) !important;
@@ -13,7 +14,6 @@
 *:active {
   outline: none !important;
   box-shadow: none !important;
-  background: transparent !important;
   text-decoration: none !important;
 }
 
@@ -827,13 +827,19 @@ html, body { height: 100%; }
 .related-photos__fullscreen {
   position: absolute;
   z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 60px; height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px; height: 45px;
   color: #fff; text-decoration: none;
   opacity: 0; transform: translateY(6px);
-  transition: opacity .2s ease, transform .2s ease, background .2s ease;
-  font-size:xx-large;
+  transition: font-size 0.2s ease;
+  font-size:28px;
+  background: #000000 !important;
+  border-radius: 30px;
+}
+.related-photos__fullscreen:hover {
+  font-size:32px;
 }
 
 .related-photos__fullscreen:active,

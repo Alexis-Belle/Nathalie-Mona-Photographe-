@@ -31,7 +31,7 @@ get_header();
       <div class="left-filter-container">
         <!-- Catégories -->
       <ul class="filter-list" data-target="#filter-category" role="listbox" aria-label="Catégories">
-          <li class="filter-item is-label is-active" data-value="">Catégories</li>
+        <li class="filter-item is-label is-active" data-value="">Catégories</li>
         <li class="filter-item" data-value="">- Par Défaut -</li>
         <?php foreach ($cats as $t): ?>
           <li class="filter-item" data-value="<?php echo esc_attr($t->slug); ?>">
