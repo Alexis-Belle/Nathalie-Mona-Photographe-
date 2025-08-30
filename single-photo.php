@@ -9,7 +9,6 @@ while ( have_posts() ) : the_post();
   // Custom fields (SCF/ACF)
   $type       = get_post_meta($post_id, 'type_photo', true);
   $reference  = get_post_meta($post_id, 'reference', true); // ex: NM-2023-014
-  // Date prise de vue = date de publication (selon le brief)
   $annee      = get_the_date('Y', $post_id);
 ?>
 <main id="single-photo__page" class="single-photo__page">

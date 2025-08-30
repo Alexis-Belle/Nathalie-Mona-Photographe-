@@ -636,10 +636,10 @@ html, body {
   transition: transform 0.2s ease;
 }
 .arrow-left {
-  background-image: url("../../assets/images/arrow-left.svg");
+  background-image: url("../../assets/images/ui/arrow-left.svg");
 }
 .arrow-right {
-  background-image: url("../../assets/images/arrow-right.svg");
+  background-image: url("../../assets/images/ui/arrow-right.svg");
 }
 
 .related-photos {
@@ -705,14 +705,14 @@ html, body {
   justify-content: center;
   text-align: center;
   color: #fff;
-  background: url("../../assets/images/hero.png") center/cover no-repeat;
+  background: url("../../assets/images/backgrounds/hero.png") center/cover no-repeat;
   /* hauteur responsive avec clamp */
   height: 80vh;
 }
 .hero__title {
   width: 80vw;
   aspect-ratio: 1200/200;
-  background: url("../../assets/images/front-title.svg") center/contain no-repeat;
+  background: url("../../assets/images/brand/front-title.svg") center/contain no-repeat;
   color: transparent;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -794,7 +794,7 @@ html, body {
   top: 50%;
   width: 15px;
   height: 15px;
-  background: url("../../assets/images/chevron.svg") no-repeat center/contain;
+  background: url("../../assets/images/ui/chevron.svg") no-repeat center/contain;
   transform: translateY(-50%);
   transition: transform 0.2s ease;
 }
@@ -865,6 +865,7 @@ html, body {
 .related-photos__item {
   position: relative;
   overflow: hidden;
+  /* Infos titre + catégorie au survol */
 }
 .related-photos__item::after {
   content: "";
@@ -883,6 +884,32 @@ html, body {
 .related-photos__item:hover .related-photos__fullscreen {
   opacity: 1;
   transform: translateY(0);
+}
+.related-photos__item:hover .related-photos__info {
+  opacity: 1;
+}
+.related-photos__item .related-photos__info {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 22px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: "Space Mono";
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  text-transform: uppercase;
+}
+.related-photos__item .related-photos__info .related-photos__ref {
+  text-align: left;
+}
+.related-photos__item .related-photos__info .related-photos__cat {
+  text-align: right;
 }
 
 /* Icônes (oeil + fullscreen) */
@@ -1044,7 +1071,7 @@ html, body {
 }
 .lb__ref, .lb__cat {
   white-space: nowrap;
-  overflow: hidden;
+  overflow: show;
   text-overflow: ellipsis;
   max-width: 45%;
 }

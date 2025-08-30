@@ -1,6 +1,9 @@
-jQuery(function($){
-  let page = 2; // la page 1 est déjà rendue côté PHP
+// GESTION AJAX PHOTOS
 
+jQuery(function($){
+  let page = 2; // La première page (1) est déjà affichée en PHP
+
+  // Récupère les filtres actifs
   function getFilters() {
     return {
       category: $('#filter-category').val() || '',
@@ -9,7 +12,8 @@ jQuery(function($){
     };
   }
 
-  // Charger plus
+  // BOUTON "CHARGER PLUS"
+
   $('#load-more').on('click', function(){
     $.post(NM_AJAX.url, {
       action: 'nm_get_photos',
@@ -17,11 +21,12 @@ jQuery(function($){
       page:   page,
       ...getFilters()
     }, function(res){
-      if (!res || !res.success) return;
+      if (!res || !res.success) return; // Stop si erreur
 
       const html = res.data.html || '';
-      $('#photo-grid').append(html);
+      $('#photo-grid').append(html); // Ajoute les nouvelles photos
 
+      // Gère l'affichage du bouton
       if (res.data.hasMore) {
         page = res.data.nextPage;
         $('#load-more').show();
@@ -31,7 +36,8 @@ jQuery(function($){
     });
   });
 
-  // Changement de filtres (inputs hidden mis à jour par les <li>)
+  // FILTRES (AU CHANGEMENT)
+
   $('#photo-filters').on('change', 'input[type=hidden]', function(){
     $.post(NM_AJAX.url, {
       action: 'nm_get_photos',
@@ -42,7 +48,7 @@ jQuery(function($){
       if (!res || !res.success) return;
 
       const html = res.data.html || '';
-      $('#photo-grid').html(html);
+      $('#photo-grid').html(html); // Remplace les photos
 
       if (res.data.hasMore) {
         page = res.data.nextPage;
@@ -54,53 +60,44 @@ jQuery(function($){
   });
 });
 
-// Custom selects en <ul>
+
+// CUSTOM SELECTS <UL>
+
 (function initCustomFilters($){
   $('.filter-list').each(function(){
-    const $list = $(this);
-    const targetSel = $list.data('target');
-    const $hidden   = $(targetSel);
+    const $list = $(this);              // Liste <ul>
+    const targetSel = $list.data('target'); 
+    const $hidden   = $(targetSel);     // Input hidden lié
 
     const $items = $list.find('.filter-item');
-    const $label = $items.first();      // 1er li = label
+    const $label = $items.first();      // Premier <li> = label
 
-    // s'assure que le label a la class
-    $label.addClass('is-label');
+    $label.addClass('is-label');        // Ajoute la classe label
+    $list.removeClass('is-open');       // Ferme la liste par défaut
 
-    // ferme par défaut
-    $list.removeClass('is-open');
-
-    // ouvrir/fermer au clic sur le label
+    // Ouvrir/fermer la liste
     $label.on('click', function(e){
       e.preventDefault();
       $list.toggleClass('is-open');
     });
 
-    // choisir une option
+    // Sélection d'une option
     $items.not($label).on('click', function(e){
       e.preventDefault();
       const $opt = $(this);
       const val  = $opt.data('value') ?? '';
       const txt  = $.trim($opt.text());
 
-      // visuel actif
       $items.removeClass('is-active');
       $opt.addClass('is-active');
 
-      // met à jour le label (affiche le choix)
-      $label.text(txt).attr('data-value', val);
-
-      // met à jour l'input caché + déclenche change
-      if ($hidden.length){
-        $hidden.val(val).trigger('change');
-      }
-
-      // refermer
+      $label.text(txt).attr('data-value', val); // Affiche le choix
+      if ($hidden.length) $hidden.val(val).trigger('change'); // MAJ input
       $list.removeClass('is-open');
     });
   });
 
-  // ferme si on clique hors du composant
+  // Fermer en cliquant hors du composant
   $(document).on('click', function(e){
     if ($(e.target).closest('.filter-list').length === 0){
       $('.filter-list').removeClass('is-open');

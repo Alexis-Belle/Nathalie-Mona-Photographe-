@@ -1,15 +1,16 @@
 <?php
 
 add_action('wp_enqueue_scripts', function () {
-    // CSS parent
+    $theme_version = wp_get_theme()->get('Version');
+
+    //  STYLES
     wp_enqueue_style(
-        'twenty-twenty-one-style',
+        'parent-style',
         get_template_directory_uri() . '/style.css',
         [],
         wp_get_theme(get_template())->get('Version')
     );
 
-    // Polices Google (charger ensuite localement avec extension)
     wp_enqueue_style(
         'nm-google-fonts',
         'https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap',
@@ -17,103 +18,115 @@ add_action('wp_enqueue_scripts', function () {
         null
     );
 
-    // CSS thème enfant
     wp_enqueue_style(
         'child-style',
-        get_stylesheet_directory_uri() . '/assets/css/main.css',
-        [ 'twenty-twenty-one-style', 'nm-google-fonts' ],
-        wp_get_theme()->get('Version')
+        get_theme_file_uri('/assets/css/main.css'),
+        ['parent-style', 'nm-google-fonts'],
+        $theme_version
     );
 
-    // JS du thème enfant
+    // SCRIPTS PRINCIPAUX
     wp_enqueue_script(
-        'twentytwentyone-script',
-        get_stylesheet_directory_uri() . '/assets/js/script.js',
+        'child-script', // JS principal
+        get_theme_file_uri('/assets/js/script.js'),
         [],
-        wp_get_theme()->get('Version'),
+        $theme_version,
         true
     );
+
+    // Lightbox
+    wp_enqueue_script(
+        'lightbox',
+        get_theme_file_uri('/assets/js/lightbox.js'),
+        [],
+        '1.0',
+        true
+    );
+
+    // Photos Ajax
+    wp_enqueue_script(
+        'photos-ajax',
+        get_theme_file_uri('/assets/js/photos-ajax.js'),
+        ['jquery'],
+        $theme_version,
+        true
+    );
+
+    // Variables passées à Ajax (URL & sécurité)
+    wp_localize_script('photos-ajax', 'NM_AJAX', [
+        'url'   => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('nm_photos_nonce'),
+    ]);
 }, 20);
 
-function theme_register_menus() {
-    register_nav_menu('main-menu', __('Menu d’accueil', 'text-domain'));
-    register_nav_menu('footer-menu', __('Menu pied de page', 'text-domain'));
-}
-add_action('after_setup_theme', 'theme_register_menus');
 
+// MENUS
 
-
-add_action('wp_enqueue_scripts', function () {
-  wp_enqueue_script('lightbox', get_stylesheet_directory_uri() . '/assets/js/lightbox.js', [], '1.0', true);
+add_action('after_setup_theme', function () {
+    register_nav_menu('main-menu', __('Menu d’accueil', 'text-domain')); // Menu principal
+    register_nav_menu('footer-menu', __('Menu pied de page', 'text-domain')); // Menu pied de page
 });
 
 
 
-// Charger le JS avec les variables Ajax
-add_action('wp_enqueue_scripts', function () {
-  wp_enqueue_script(
-    'photos-ajax',
-    get_stylesheet_directory_uri() . '/assets/js/photos-ajax.js',
-    ['jquery'],
-    null,
-    true
-  );
+// AJAX - CHARGEMENT DES PHOTOS
 
-  wp_localize_script('photos-ajax', 'NM_AJAX', [
-    'url'   => admin_url('admin-ajax.php'),
-    'nonce' => wp_create_nonce('nm_photos_nonce'),
-  ]);
-});
-
+// Enregistre les actions Ajax (utilisateur connecté et non connecté)
 add_action('wp_ajax_nm_get_photos', 'nm_get_photos');
 add_action('wp_ajax_nopriv_nm_get_photos', 'nm_get_photos');
 
 function nm_get_photos() {
-  if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'nm_photos_nonce')) {
-    wp_send_json_error(['message' => 'Nonce invalide'], 403);
-  }
-
-  $page     = isset($_POST['page']) ? intval($_POST['page']) : 1;
-  $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
-  $format   = isset($_POST['format'])   ? sanitize_text_field($_POST['format'])   : '';
-  $orderSel = isset($_POST['order'])    ? sanitize_text_field($_POST['order'])    : 'date_desc';
-
-  // Tri
-  $orderby = 'date';
-  $order   = 'DESC';
-  if ($orderSel === 'date_asc')  { $orderby = 'date';  $order = 'ASC'; }
-  if ($orderSel === 'title_asc') { $orderby = 'title'; $order = 'ASC'; }
-  if ($orderSel === 'title_desc'){ $orderby = 'title'; $order = 'DESC'; }
-
-  $args = [
-    'post_type'      => 'photo',
-    'posts_per_page' => 8,
-    'paged'          => $page,
-    'orderby'        => $orderby,
-    'order'          => $order,
-  ];
-
-  $tax_query = [];
-  if ($category) $tax_query[] = ['taxonomy'=>'categorie','field'=>'slug','terms'=>$category];
-  if ($format)   $tax_query[] = ['taxonomy'=>'format','field'=>'slug','terms'=>$format];
-  if ($tax_query) $args['tax_query'] = $tax_query;
-
-  $q = new WP_Query($args);
-
-  ob_start();
-  if ($q->have_posts()) {
-    while ($q->have_posts()) { $q->the_post();
-      get_template_part('template-parts/photo-card');
+    // Vérification sécurité nonce
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'nm_photos_nonce')) {
+        wp_send_json_error(['message' => 'Nonce invalide'], 403);
     }
-  }
-  wp_reset_postdata();
-  $html = ob_get_clean();
 
-  $has_more = ($q->max_num_pages > $page);
+    // Récupération et nettoyage des paramètres
+    $page     = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $category = sanitize_text_field($_POST['category'] ?? '');
+    $format   = sanitize_text_field($_POST['format'] ?? '');
+    $orderSel = sanitize_text_field($_POST['order'] ?? 'date_desc');
 
-  wp_send_json_success([
-    'html'     => $html,
-    'hasMore'  => $has_more,
-    'nextPage' => $page + 1,
-  ]);
+    // Définir ordre de tri
+    $orderby = 'date';
+    $order   = 'DESC';
+    if ($orderSel === 'date_asc')  { $orderby = 'date';  $order = 'ASC'; }
+    if ($orderSel === 'title_asc') { $orderby = 'title'; $order = 'ASC'; }
+    if ($orderSel === 'title_desc'){ $orderby = 'title'; $order = 'DESC'; }
+
+    // Préparation de la requête WP_Query
+    $args = [
+        'post_type'      => 'photo',
+        'posts_per_page' => 8,
+        'paged'          => $page,
+        'orderby'        => $orderby,
+        'order'          => $order,
+    ];
+
+    // Ajout des taxonomies si filtrées
+    $tax_query = [];
+    if ($category) $tax_query[] = ['taxonomy' => 'categorie', 'field' => 'slug', 'terms' => $category];
+    if ($format)   $tax_query[] = ['taxonomy' => 'format',    'field' => 'slug', 'terms' => $format];
+    if (!empty($tax_query)) $args['tax_query'] = $tax_query;
+
+    // Exécution de la requête
+    $q = new WP_Query($args);
+
+    // Capture le HTML généré
+    ob_start();
+    if ($q->have_posts()) {
+        while ($q->have_posts()) { 
+            $q->the_post();
+            get_template_part('template-parts/photo-card'); // Template de chaque photo
+        }
+    }
+    wp_reset_postdata();
+    $html = ob_get_clean();
+
+    // Réponse JSON
+    wp_send_json_success([
+        'html'     => $html,
+        'hasMore'  => ($q->max_num_pages > $page), // Y a-t-il d'autres pages ?
+        'nextPage' => $page + 1,
+    ]);
 }

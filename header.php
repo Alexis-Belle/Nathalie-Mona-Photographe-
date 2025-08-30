@@ -20,7 +20,7 @@
 	<nav class="nm-nav" role="navigation" aria-label="<?php esc_attr_e('Menu principal', 'text-domain'); ?>">
         <div class="container-logo">
             <a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
-                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/logo-nathalie-mota.png" alt="Nathalie Mota" class="site-logo">
+                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/brand/logo-nathalie-mota.png" alt="Nathalie Mota" class="site-logo">
             </a>
         </div>
         <div class="container-liens">
