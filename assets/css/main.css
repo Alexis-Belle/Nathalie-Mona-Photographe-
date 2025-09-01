@@ -161,6 +161,7 @@ html, body {
   list-style: none;
   margin: 0;
   padding: 0;
+  text-transform: uppercase;
 }
 .container-liens li {
   width: 6.5em;
